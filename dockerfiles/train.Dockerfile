@@ -136,8 +136,9 @@ RUN --mount=type=cache,target=${CONDA_PKGS_DIRS},sharing=locked \
     elif [ "${MKL_MODE}" = "exclude" ]; then \
       echo 'nomkl' >> ${BUILD_REQS}; \
     else echo "Invalid `MKL_MODE`: ${MKL_MODE}." && exit -1; fi && \
-    echo "pytorch::magma-cuda$(echo ${CUDA_VERSION} | sed 's/\.//; s/\..*//')" >> ${BUILD_REQS} && \
-    $conda install -y --file ${BUILD_REQS}
+    $conda install -y --file ${BUILD_REQS}   
+#echo "pytorch::magma-cuda$(echo ${CUDA_VERSION} | sed 's/\.//; s/\..*//')" >> ${BUILD_REQS} && \
+#    $conda install -y --file ${BUILD_REQS}
 
 # Use Jemalloc as the system memory allocator for efficient memory management.
 ENV LD_PRELOAD=/opt/conda/lib/libjemalloc.so${LD_PRELOAD:+:${LD_PRELOAD}}
@@ -263,10 +264,18 @@ RUN $conda install -y libjpeg-turbo zlib && $conda clean -fya
 ARG PILLOW_SIMD_VERSION
 # The condition ensures that AVX2 instructions are built only if available.
 # May cause issues if the image is used on a machine with a different SIMD ISA.
-RUN if [ ! "$(lscpu | grep -q avx2)" ]; then CC="cc -mavx2"; fi && \
-    python -m pip wheel --no-deps --wheel-dir /tmp/dist \
-        Pillow-SIMD${PILLOW_SIMD_VERSION}
+#RUN if [ ! "$(lscpu | grep -q avx2)" ]; then CC="cc -mavx2"; fi && \
+#    python -m pip wheel --no-deps --wheel-dir /tmp/dist \
+#        Pillow-SIMD${PILLOW_SIMD_VERSION}
 
+ARG USE_PILLOW_SIMD=false
+RUN if [ "$USE_PILLOW_SIMD" = "false" ] || [ "$(uname -m)" = "aarch64" ]; then \
+        PILLOW_PACKAGE="Pillow"; \
+    else \
+        PILLOW_PACKAGE="Pillow-SIMD"; \
+    fi && \
+    python -m pip wheel --no-deps --wheel-dir /tmp/dist \
+        ${PILLOW_PACKAGE}${PILLOW_SIMD_VERSION}
 ########################################################################
 FROM ${GIT_IMAGE} AS clone-vision
 
