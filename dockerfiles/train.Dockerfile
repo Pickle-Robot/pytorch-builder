@@ -224,10 +224,11 @@ ARG USE_PRIORITIZED_TEXT_FOR_LD=0
 # RUN python -c "print('X')" && exit 1
 
 # RUN python -c "import platform; print('X'); print( platform.machine()); print('y')" && exit 1
+RUN /bin/bash
 
 # cat setup.py && \
 RUN --mount=type=cache,target=/opt/ccache \
-   CMAKE_FRESH=1 MAX_JOBS=1 USE_SYSTEM_NCCL=1 python -X faulthandler setup.py bdist_wheel -d /tmp/dist; exit 1
+   CMAKE_FRESH=1 MAX_JOBS=1 USE_SYSTEM_NCCL=1 python setup.py bdist_wheel -d /tmp/dist; exit 1
 
 ENTRYPOINT [ "/bin/bash" ]
     
