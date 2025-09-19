@@ -26,9 +26,8 @@ RUN mkdir -p /miniconda3 && \
 
 # /miniconda3/bin/activate in all future RUN commands
 ENV PATH="/miniconda3/bin:$PATH"
-RUN 
-     conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main && \
-     conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r && \
+RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main && \
+    conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r && \
     conda install python=${PYTHON_VERSION} && \
     conda clean -fya && rm -rf /tmp/conda/miniconda.sh && \
     find /miniconda3 -type d -name '__pycache__' | xargs rm -rf
