@@ -229,6 +229,8 @@ RUN --mount=type=cache,target=/opt/ccache \
     
 RUN python -m trace -t setup.py install
 
+RUN pip list; exit 1
+
 ###### Additional information for custom builds. ######
 
 # Use the following to build with custom CMake settings.
