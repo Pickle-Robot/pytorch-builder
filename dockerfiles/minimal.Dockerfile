@@ -38,9 +38,6 @@ RUN /miniconda3/bin/conda init bash && \
     /miniconda3/bin/conda create -n py311 python=3.11 -y
 
 
-RUN ls /miniconda3/envs && exit 1
-
-
 
 # Minimize downloads by only cloning shallow branches and not the full `git` history.
 # Use at most 8 jobs for cloning the repository and its submodules.
