@@ -33,12 +33,16 @@ RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkg
     find /miniconda3 -type d -name '__pycache__' | xargs rm -rf
 
 
+
+
 # Minimize downloads by only cloning shallow branches and not the full `git` history.
 # Use at most 8 jobs for cloning the repository and its submodules.
 RUN git clone --jobs $(( 8 < $(nproc) ? 8: $(nproc) )) --depth 1 \
         --single-branch --shallow-submodules --recurse-submodules \
         --branch ${PYTORCH_VERSION_TAG} ${TORCH_URL} /opt/pytorch
-        
+
+# Make RUN commands use the new environment
+SHELL ["/opt/miniconda3/bin/conda", "run", "-n", "py311", "/bin/bash", "-c"]
 
 WORKDIR /opt/pytorch
 ARG TORCH_CUDA_ARCH_LIST="11.0" # +PTX?
@@ -46,6 +50,8 @@ ARG TORCH_CUDA_ARCH_LIST="11.0" # +PTX?
 
 RUN git submodule sync && \
     git submodule update --init --recursive
+
+# Install PyTorch build dependencies via `conda`
 
 # Run this command from the PyTorch directory after cloning the source code using the “Get the PyTorch Source“ section above
 RUN pip install --group dev
