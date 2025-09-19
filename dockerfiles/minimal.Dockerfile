@@ -18,7 +18,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ARG conda=/opt/conda/bin/${CONDA_MANAGER}
 ARG PYTHON_VERSION=3.11.13
 # install miniconda
-RUN wget ${CONDA_URL} -O /miniconda3/miniconda.sh && \
+RUN mkdir -p /miniconda3 && \
+    wget ${CONDA_URL} -O /miniconda3/miniconda.sh && \
     /miniconda3/miniconda.sh -b -u -p /miniconda3 && \
     rm /miniconda3/miniconda.sh
 
