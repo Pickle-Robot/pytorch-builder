@@ -227,7 +227,7 @@ RUN --mount=type=cache,target=/opt/ccache \
     echo "ARCHLIST: $TORCH_CUDA_ARCH_LIST" && \
     VERBOSE_SCRIPT=1 USE_SYSTEM_NCCL=1 CMAKE_FRESH=1 MAX_JOBS=1 python -m trace -t setup.py --build bdist_wheel -d /tmp/dist 
     
-RUN python setup.py install
+RUN python  -m trace -t setup.py install
 
 ###### Additional information for custom builds. ######
 
