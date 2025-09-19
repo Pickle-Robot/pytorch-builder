@@ -11,8 +11,7 @@ WORKDIR /tmp/conda
 
 ARG conda=/opt/conda/bin/${CONDA_MANAGER}
 ARG PYTHON_VERSION=3.11.13
-RUN --mount=type=bind,from=curl-conda,source=/tmp/conda,target=/tmp/conda \
-    /bin/bash /tmp/conda/miniconda.sh -b -p /opt/conda && \
+RUN /bin/bash /tmp/conda/miniconda.sh -b -p /opt/conda && \
     printf "channels:\n  - conda-forge\n  - nodefaults\nssl_verify: false\n" > /opt/conda/.condarc && \
     $conda install -y python=${PYTHON_VERSION} && $conda clean -fya && \
     find /opt/conda -type d -name '__pycache__' | xargs rm -rf
