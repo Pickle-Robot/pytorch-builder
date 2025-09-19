@@ -268,6 +268,7 @@ ARG PILLOW_SIMD_VERSION
 #    python -m pip wheel --no-deps --wheel-dir /tmp/dist \
 #        Pillow-SIMD${PILLOW_SIMD_VERSION}
 
+## Use Pillow-SIMD if available and not on aarch64
 ARG USE_PILLOW_SIMD=false
 RUN if [ "$USE_PILLOW_SIMD" = "false" ] || [ "$(uname -m)" = "aarch64" ]; then \
         PILLOW_PACKAGE="Pillow"; \
@@ -429,8 +430,8 @@ RUN $conda clean -fya && find /opt/conda -type d -name '__pycache__' | xargs rm 
 
 # Enable Intel MKL optimizations on AMD CPUs.
 # https://danieldk.eu/Posts/2020-08-31-MKL-Zen.html
-RUN echo 'int mkl_serv_intel_cpu_true() {return 1;}' > /opt/conda/fakeintel.c && \
-    gcc -shared -fPIC -o /opt/conda/libfakeintel.so /opt/conda/fakeintel.c
+# RUN echo 'int mkl_serv_intel_cpu_true() {return 1;}' > /opt/conda/fakeintel.c && \
+#     gcc -shared -fPIC -o /opt/conda/libfakeintel.so /opt/conda/fakeintel.c
 
 ########################################################################
 FROM ${TRAIN_IMAGE} AS train-base
