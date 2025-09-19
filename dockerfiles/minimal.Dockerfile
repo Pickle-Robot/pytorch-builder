@@ -11,9 +11,11 @@ WORKDIR /tmp/conda
 
 ARG conda=/opt/conda/bin/${CONDA_MANAGER}
 ARG PYTHON_VERSION=3.11.13
-RUN /bin/bash /tmp/conda/miniconda.sh -b -p /opt/conda && \
+RUN curl ${CONDA_URL} -o /tmp/conda/miniconda && \
+    /bin/bash /tmp/conda/miniconda -b -p /opt/conda && \
     printf "channels:\n  - conda-forge\n  - nodefaults\nssl_verify: false\n" > /opt/conda/.condarc && \
-    $conda install -y python=${PYTHON_VERSION} && $conda clean -fya && \
+    $conda install python=${PYTHON_VERSION} && \
+    $conda clean -fya && rm -rf /tmp/conda/miniconda && \
     find /opt/conda -type d -name '__pycache__' | xargs rm -rf
 
 # Minimize downloads by only cloning shallow branches and not the full `git` history.
