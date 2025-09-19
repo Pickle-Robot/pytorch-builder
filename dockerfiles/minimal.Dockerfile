@@ -9,6 +9,12 @@ ARG CONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-py311_25.7.0-2-Linu
 ARG CONDA_MANAGER=conda
 WORKDIR /tmp/conda
 
+# install git, wget, bzip2, and other dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    wget &&\
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
 ARG conda=/opt/conda/bin/${CONDA_MANAGER}
 ARG PYTHON_VERSION=3.11.13
 # install miniconda
