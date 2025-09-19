@@ -32,6 +32,11 @@ RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkg
     conda clean -fya && rm -rf /tmp/conda/miniconda.sh && \
     find /miniconda3 -type d -name '__pycache__' | xargs rm -rf
 
+# Create a new conda environment with the same Python version as the system Python.
+# Initialize conda
+RUN /miniconda3/bin/conda init bash && \
+    /miniconda3/bin/conda create -n py311 python=3.11 -y
+
 
 RUN ls /miniconda3/envs && exit 1
 
@@ -44,7 +49,7 @@ RUN git clone --jobs $(( 8 < $(nproc) ? 8: $(nproc) )) --depth 1 \
         --branch ${PYTORCH_VERSION_TAG} ${TORCH_URL} /opt/pytorch
 
 # Make RUN commands use the new environment
-SHELL ["/miniconda3/bin/conda", "run", "-n", "py31113", "/bin/bash", "-c"]
+SHELL ["/miniconda3/bin/conda", "run", "-n", "py311", "/bin/bash", "-c"]
 
 WORKDIR /opt/pytorch
 ARG TORCH_CUDA_ARCH_LIST="11.0" # +PTX?
