@@ -220,7 +220,7 @@ ARG TORCH_NVCC_FLAGS="-Xfatbin -compress-all"
 # " we strongly recommend enabling linker script optimization for ARM + CUDA"
 # To do so please export USE_PRIORITIZED_TEXT_FOR_LD=1
 # RUN ld -verbose
-ARG USE_PRIORITIZED_TEXT_FOR_LD=1
+ARG USE_PRIORITIZED_TEXT_FOR_LD=0
 RUN --mount=type=cache,target=/opt/ccache \
     python setup.py bdist_wheel -d /tmp/dist && \
     python setup.py install
