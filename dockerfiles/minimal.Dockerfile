@@ -1,7 +1,6 @@
 FROM nvidia/cuda:13.0.1-cudnn-devel-ubuntu22.04
 
-ARG PYTORCH_VERSION_TAG=v2.8.0
-ARG TORCH_URL=https://github.com/pytorch/pytorch.git
+
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 
@@ -41,6 +40,8 @@ RUN /miniconda3/bin/conda init bash && \
 
 # Minimize downloads by only cloning shallow branches and not the full `git` history.
 # Use at most 8 jobs for cloning the repository and its submodules.
+ARG PYTORCH_VERSION_TAG=/v2.9.0-rc2
+ARG TORCH_URL=https://github.com/pytorch/pytorch.git
 RUN git clone --jobs $(( 8 < $(nproc) ? 8: $(nproc) )) --depth 1 \
         --single-branch --shallow-submodules --recurse-submodules \
         --branch ${PYTORCH_VERSION_TAG} ${TORCH_URL} /opt/pytorch
