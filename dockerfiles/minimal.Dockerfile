@@ -49,15 +49,15 @@ RUN git clone --jobs $(( 8 < $(nproc) ? 8: $(nproc) )) --depth 1 \
 SHELL ["/miniconda3/bin/conda", "run", "-n", "py311", "/bin/bash", "-c"]
 
 WORKDIR /opt/pytorch
-ARG TORCH_CUDA_ARCH_LIST="11.0" # +PTX?
-# ARG BUILD_LIBTORCH_WHL=1
 
 RUN git submodule sync && \
     git submodule update --init --recursive
 
 # Install PyTorch build dependencies via `conda`
-
 # Run this command from the PyTorch directory after cloning the source code using the “Get the PyTorch Source“ section above
-RUN pip install --group dev
-RUN  python -X faulthandler setup.py bdist_wheel -d /tmp/dist
+RUN cat pyproject.toml && pip install --group dev
 
+
+ARG TORCH_CUDA_ARCH_LIST="11.0" # +PTX?
+# ARG BUILD_LIBTORCH_WHL=1
+# RUN  python -X faulthandler setup.py bdist_wheel -d /tmp/dist
