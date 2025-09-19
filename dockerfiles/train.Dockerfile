@@ -221,7 +221,9 @@ ARG TORCH_NVCC_FLAGS="-Xfatbin -compress-all"
 # To do so please export USE_PRIORITIZED_TEXT_FOR_LD=1
 # RUN ld -verbose
 ARG USE_PRIORITIZED_TEXT_FOR_LD=0
+
 RUN --mount=type=cache,target=/opt/ccache \
+    cat setup.py && \
     MAX_JOBS=1 python setup.py bdist_wheel -d /tmp/dist 
     
 RUN python setup.py install
