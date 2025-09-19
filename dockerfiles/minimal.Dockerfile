@@ -11,12 +11,17 @@ WORKDIR /tmp/conda
 
 ARG conda=/opt/conda/bin/${CONDA_MANAGER}
 ARG PYTHON_VERSION=3.11.13
-RUN curl ${CONDA_URL} -o /tmp/conda/miniconda && \
-    /bin/bash /tmp/conda/miniconda -b -p /opt/conda && \
-    printf "channels:\n  - conda-forge\n  - nodefaults\nssl_verify: false\n" > /opt/conda/.condarc && \
-    $conda install python=${PYTHON_VERSION} && \
-    $conda clean -fya && rm -rf /tmp/conda/miniconda && \
-    find /opt/conda -type d -name '__pycache__' | xargs rm -rf
+# install miniconda
+RUN wget ${CONDA_URL} -O /miniconda3/miniconda.sh && \
+    /miniconda3/miniconda.sh -b -u -p /miniconda3 && \
+    rm /miniconda3/miniconda.sh
+
+# /miniconda3/bin/activate in all future RUN commands
+ENV PATH="/miniconda3/bin:$PATH"
+RUN conda install python=${PYTHON_VERSION} && \
+    conda clean -fya && rm -rf /tmp/conda/miniconda.sh && \
+    find /miniconda3 -type d -name '__pycache__' | xargs rm -rf
+
 
 # Minimize downloads by only cloning shallow branches and not the full `git` history.
 # Use at most 8 jobs for cloning the repository and its submodules.
