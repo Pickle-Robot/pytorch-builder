@@ -222,8 +222,9 @@ ARG TORCH_NVCC_FLAGS="-Xfatbin -compress-all"
 # RUN ld -verbose
 ARG USE_PRIORITIZED_TEXT_FOR_LD=0
 RUN --mount=type=cache,target=/opt/ccache \
-    python setup.py bdist_wheel -d /tmp/dist && \
-    python setup.py install
+    python setup.py bdist_wheel -d /tmp/dist 
+    
+RUN python setup.py install
 
 ###### Additional information for custom builds. ######
 
