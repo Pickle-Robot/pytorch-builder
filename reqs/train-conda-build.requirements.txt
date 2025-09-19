@@ -23,7 +23,7 @@ numpy
 psutil
 pyyaml
 requests
-setuptools
+setuptools===59.5.0
 sympy
 types-dataclasses
 typing-extensions
