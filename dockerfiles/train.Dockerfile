@@ -217,6 +217,9 @@ ARG TORCH_CUDA_ARCH_LIST
 ARG TORCH_NVCC_FLAGS="-Xfatbin -compress-all"
 # Build wheel for installation in later stages.
 # Install PyTorch for subsidiary libraries (e.g., TorchVision).
+# " we strongly recommend enabling linker script optimization for ARM + CUDA"
+# To do so please export USE_PRIORITIZED_TEXT_FOR_LD=1
+ARG USE_PRIORITIZED_TEXT_FOR_LD 
 RUN --mount=type=cache,target=/opt/ccache \
     python setup.py bdist_wheel -d /tmp/dist && \
     python setup.py install
@@ -302,7 +305,7 @@ ARG USE_CUDA
 ARG USE_PRECOMPILED_HEADERS
 ARG FORCE_CUDA=${USE_CUDA}
 ARG TORCH_CUDA_ARCH_LIST
-RUN --mount=type=cache,target=/opt/ccache \
+RUN --mount=type=cache,target=/opt/ccache \:g22
     python setup.py bdist_wheel -d /tmp/dist
 
 ########################################################################
