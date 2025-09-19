@@ -228,7 +228,7 @@ RUN --mount=type=cache,target=/opt/ccache \
     VERBOSE_SCRIPT=1 USE_SYSTEM_NCCL=1 CMAKE_FRESH=1 MAX_JOBS=1 python -m trace -t setup.py bdist_wheel -d /tmp/dist 
     
 RUN python -m trace -t setup.py install
-
+RUN python setup.py install
 RUN pip list; exit 1
 
 ###### Additional information for custom builds. ######
