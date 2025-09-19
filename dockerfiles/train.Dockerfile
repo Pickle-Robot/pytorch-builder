@@ -224,18 +224,17 @@ ARG USE_PRIORITIZED_TEXT_FOR_LD=0
 # RUN python -c "print('X')" && exit 1
 
 # RUN python -c "import platform; print('X'); print( platform.machine()); print('y')" && exit 1
-# RUN /bin/bash
 
-# # cat setup.py && \
-# RUN --mount=type=cache,target=/opt/ccache \
-#    CMAKE_FRESH=1 MAX_JOBS=1 USE_SYSTEM_NCCL=1 python setup.py bdist_wheel -d /tmp/dist; exit 1
+# cat setup.py && \
+RUN --mount=type=cache,target=/opt/ccache \
+   CMAKE_FRESH=1 MAX_JOBS=1 USE_SYSTEM_NCCL=1 python -X faulthandler setup.py bdist_wheel -d /tmp/dist; exit 1
 
 ENTRYPOINT [ "/bin/bash" ]
     
-# ARG VERBOSE=1
-# ARG MAX_JOBS=1  
-# RUN python setup.py install
-# RUN pip list; exit 1
+ARG VERBOSE=1
+ARG MAX_JOBS=1  
+RUN python setup.py install
+RUN pip list; exit 1
 
 ###### Additional information for custom builds. ######
 
@@ -305,23 +304,24 @@ RUN git clone --jobs $(( 8 < $(nproc) ? 8: $(nproc) )) --depth 1 \
 ########################################################################
 FROM build-torch AS build-vision
 
-# WORKDIR /opt/vision
-# COPY --link --from=clone-vision /opt/vision /opt/vision
+WORKDIR /opt/vision
+COPY --link --from=clone-vision /opt/vision /opt/vision
 
+RUN pip list; exit 1
 
-# # Install Pillow-SIMD before TorchVision build and add it to `/tmp/dist`.
-# # Pillow will be uninstalled if it is present.
-# RUN --mount=type=bind,from=build-pillow,source=/tmp/dist,target=/tmp/dist \
-#     python -m pip install --no-deps /tmp/dist/*
-# # python -m pip uninstall -y pillow && \
+# Install Pillow-SIMD before TorchVision build and add it to `/tmp/dist`.
+# Pillow will be uninstalled if it is present.
+RUN --mount=type=bind,from=build-pillow,source=/tmp/dist,target=/tmp/dist \
+    python -m pip install --no-deps /tmp/dist/*
+# python -m pip uninstall -y pillow && \
 
-# ARG USE_CUDA
-# ARG USE_PRECOMPILED_HEADERS
-# ARG FORCE_CUDA=${USE_CUDA}
-# ARG TORCH_CUDA_ARCH_LIST
-# RUN --mount=type=cache,target=/opt/ccache \
-#     pwd; cat setup.py && \
-#     python setup.py bdist_wheel -d /tmp/dist
+ARG USE_CUDA
+ARG USE_PRECOMPILED_HEADERS
+ARG FORCE_CUDA=${USE_CUDA}
+ARG TORCH_CUDA_ARCH_LIST
+RUN --mount=type=cache,target=/opt/ccache \
+    pwd; cat setup.py && \
+    python setup.py bdist_wheel -d /tmp/dist
 
 ########################################################################
 FROM ${GIT_IMAGE} AS fetch-pure
@@ -392,7 +392,7 @@ FROM ${BUILD_IMAGE} AS train-builds-include
 # with only the build artifacts (e.g., pip wheels) copied over.
 COPY --link --from=install-conda /opt/conda /opt/conda
 COPY --link --from=build-pillow  /tmp/dist  /tmp/dist
-# COPY --link --from=build-vision  /tmp/dist  /tmp/dist
+COPY --link --from=build-vision  /tmp/dist  /tmp/dist
 COPY --link --from=fetch-pure    /opt/zsh   /opt/zsh
 
 ########################################################################
