@@ -33,6 +33,8 @@ RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkg
     find /miniconda3 -type d -name '__pycache__' | xargs rm -rf
 
 
+RUN ls /miniconda3/envs && exit 1
+
 
 
 # Minimize downloads by only cloning shallow branches and not the full `git` history.
