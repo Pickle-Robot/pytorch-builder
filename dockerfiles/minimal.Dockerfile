@@ -37,5 +37,8 @@ ARG TORCH_CUDA_ARCH_LIST="11.0" # +PTX?
 
 RUN git submodule sync && \
     git submodule update --init --recursive
+
+# Run this command from the PyTorch directory after cloning the source code using the “Get the PyTorch Source“ section above
+RUN pip install --group dev
 RUN  python -X faulthandler setup.py bdist_wheel -d /tmp/dist
 
