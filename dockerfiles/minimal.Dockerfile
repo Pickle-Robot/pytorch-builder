@@ -1,6 +1,6 @@
 FROM nvidia/cuda:13.0.1-cudnn-devel-ubuntu22.04
 
-ARG PYTORCH_VERSION_TAG=2.8.0
+ARG PYTORCH_VERSION_TAG=v2.8.0
 ARG TORCH_URL=https://github.com/pytorch/pytorch.git
 # Minimize downloads by only cloning shallow branches and not the full `git` history.
 # Use at most 8 jobs for cloning the repository and its submodules.
