@@ -311,7 +311,7 @@ ARG USE_PRECOMPILED_HEADERS
 ARG FORCE_CUDA=${USE_CUDA}
 ARG TORCH_CUDA_ARCH_LIST
 RUN --mount=type=cache,target=/opt/ccache \
-    cat setup.py && \
+    pwd; cat setup.py && \
     python setup.py bdist_wheel -d /tmp/dist
 
 ########################################################################
