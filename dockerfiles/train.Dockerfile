@@ -225,7 +225,7 @@ ARG USE_PRIORITIZED_TEXT_FOR_LD=0
 # cat setup.py && \
 RUN --mount=type=cache,target=/opt/ccache \
     echo "ARCHLIST: $TORCH_CUDA_ARCH_LIST" && \
-    USE_SYSTEM_NCCL=1 CMAKE_FRESH=1 MAX_JOBS=1 python -m --trace setup.py bdist_wheel -d /tmp/dist 
+    USE_SYSTEM_NCCL=1 CMAKE_FRESH=1 MAX_JOBS=1 python -m trace -t setup.py bdist_wheel -d /tmp/dist 
     
 RUN python setup.py install
 
