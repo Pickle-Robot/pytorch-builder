@@ -223,7 +223,7 @@ ARG TORCH_NVCC_FLAGS="-Xfatbin -compress-all"
 ARG USE_PRIORITIZED_TEXT_FOR_LD=0
 # RUN python -c "print('X')" && exit 1
 
-RUN python -c "import platform; print('X'); print( platform.machine()); print('y')" && exit 1
+# RUN python -c "import platform; print('X'); print( platform.machine()); print('y')" && exit 1
 
 # cat setup.py && \
 RUN --mount=type=cache,target=/opt/ccache \
