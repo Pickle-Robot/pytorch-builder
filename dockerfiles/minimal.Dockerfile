@@ -5,7 +5,7 @@ ARG TORCH_URL=https://github.com/pytorch/pytorch.git
 
 # Install git 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git \
+    git curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Install python 3.11.13 using pyenv
@@ -17,6 +17,7 @@ RUN curl -fsSL https://pyenv.run | bash &&\
 RUN git clone --jobs $(( 8 < $(nproc) ? 8: $(nproc) )) --depth 1 \
         --single-branch --shallow-submodules --recurse-submodules \
         --branch ${PYTORCH_VERSION_TAG} ${TORCH_URL} /opt/pytorch
+        
 
 WORKDIR /opt/pytorch
 ARG TORCH_CUDA_ARCH_LIST="11.0" # +PTX?
