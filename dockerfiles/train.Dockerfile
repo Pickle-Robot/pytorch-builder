@@ -221,11 +221,13 @@ ARG TORCH_NVCC_FLAGS="-Xfatbin -compress-all"
 # To do so please export USE_PRIORITIZED_TEXT_FOR_LD=1
 # RUN ld -verbose
 ARG USE_PRIORITIZED_TEXT_FOR_LD=0
-# RUN pip list; exit 1
+RUN python -c "import platform"
 
 # cat setup.py && \
 RUN --mount=type=cache,target=/opt/ccache \
    CMAKE_FRESH=1 MAX_JOBS=1 USE_SYSTEM_NCCL=1 python -m trace -t setup.py bdist_wheel -d /tmp/dist; exit 1
+
+
     
 ARG VERBOSE=1
 ARG MAX_JOBS=1  
