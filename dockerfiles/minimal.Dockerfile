@@ -2,11 +2,13 @@ FROM nvidia/cuda:13.0.1-cudnn-devel-ubuntu22.04
 
 ARG PYTORCH_VERSION_TAG=v2.8.0
 ARG TORCH_URL=https://github.com/pytorch/pytorch.git
-
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Etc/UTC
 # Install git 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git curl \
     && rm -rf /var/lib/apt/lists/*
+
 
 RUN apt-get update && apt-get install -y \
     software-properties-common \
