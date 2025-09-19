@@ -8,6 +8,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     && rm -rf /var/lib/apt/lists/*
 
+# Install python 3.11.13 using pyenv
+RUN curl -fsSL https://pyenv.run | bash
+
 # Minimize downloads by only cloning shallow branches and not the full `git` history.
 # Use at most 8 jobs for cloning the repository and its submodules.
 RUN git clone --jobs $(( 8 < $(nproc) ? 8: $(nproc) )) --depth 1 \
