@@ -107,6 +107,10 @@ ENV_FILE = .env
 build: check vs # Rebuild the image before creating a new container.
 	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
 	docker compose -p ${PROJECT} up	--build -d ${SERVICE}
+build-dbg: check vs
+	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
+	docker compose -p ${PROJECT} up	--build -d ${SERVICE}
+
 build-only: check # Build the image without creating a new container.
 	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
 	docker compose -p ${PROJECT} build ${SERVICE}
