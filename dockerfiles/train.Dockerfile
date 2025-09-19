@@ -227,7 +227,7 @@ RUN --mount=type=cache,target=/opt/ccache \
     echo "ARCHLIST: $TORCH_CUDA_ARCH_LIST" && \
     VERBOSE_SCRIPT=1 USE_SYSTEM_NCCL=1 CMAKE_FRESH=1 MAX_JOBS=1 python -m trace -t setup.py bdist_wheel -d /tmp/dist 
     
-RUN python  -m trace -t setup.py install
+RUN python -m trace -t setup.py install
 
 ###### Additional information for custom builds. ######
 
@@ -300,11 +300,13 @@ FROM build-torch AS build-vision
 WORKDIR /opt/vision
 COPY --link --from=clone-vision /opt/vision /opt/vision
 
+RUN pip list; exit 1
+
 # Install Pillow-SIMD before TorchVision build and add it to `/tmp/dist`.
 # Pillow will be uninstalled if it is present.
 RUN --mount=type=bind,from=build-pillow,source=/tmp/dist,target=/tmp/dist \
-    python -m pip uninstall -y pillow && \
     python -m pip install --no-deps /tmp/dist/*
+# python -m pip uninstall -y pillow && \
 
 ARG USE_CUDA
 ARG USE_PRECOMPILED_HEADERS
