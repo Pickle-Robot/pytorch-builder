@@ -42,7 +42,7 @@ RUN git clone --jobs $(( 8 < $(nproc) ? 8: $(nproc) )) --depth 1 \
         --branch ${PYTORCH_VERSION_TAG} ${TORCH_URL} /opt/pytorch
 
 # Make RUN commands use the new environment
-SHELL ["/miniconda3/bin/conda", "run", "-n", "py311", "/bin/bash", "-c"]
+SHELL ["/miniconda3/bin/conda", "run", "-n", "py31113", "/bin/bash", "-c"]
 
 WORKDIR /opt/pytorch
 ARG TORCH_CUDA_ARCH_LIST="11.0" # +PTX?
