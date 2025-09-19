@@ -224,7 +224,7 @@ ARG USE_PRIORITIZED_TEXT_FOR_LD=0
 
 # cat setup.py && \
 RUN --mount=type=cache,target=/opt/ccache \
-   MAX_JOBS=1 USE_SYSTEM_NCCL=1 python setup.py -v -v bdist_wheel --verbose -d /tmp/dist
+   CMAKE_FRESH=1 MAX_JOBS=1 USE_SYSTEM_NCCL=1 python setup.py -v -v bdist_wheel --verbose -d /tmp/dist
     
 ARG VERBOSE=1
 ARG MAX_JOBS=1  
