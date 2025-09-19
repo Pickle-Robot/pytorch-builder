@@ -34,5 +34,8 @@ RUN git clone --jobs $(( 8 < $(nproc) ? 8: $(nproc) )) --depth 1 \
 WORKDIR /opt/pytorch
 ARG TORCH_CUDA_ARCH_LIST="11.0" # +PTX?
 # ARG BUILD_LIBTORCH_WHL=1
+
+RUN git submodule sync && \
+    git submodule update --init --recursive
 RUN  python -X faulthandler setup.py bdist_wheel -d /tmp/dist
 
