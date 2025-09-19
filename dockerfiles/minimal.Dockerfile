@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Create symlinks
-RUN ln -s /usr/bin/python3.11 /usr/bin/python \
+RUN ln -s /usr/bin/python3.11 /usr/bin/python 
 
 # Minimize downloads by only cloning shallow branches and not the full `git` history.
 # Use at most 8 jobs for cloning the repository and its submodules.
