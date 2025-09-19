@@ -392,7 +392,7 @@ FROM ${BUILD_IMAGE} AS train-builds-include
 # with only the build artifacts (e.g., pip wheels) copied over.
 COPY --link --from=install-conda /opt/conda /opt/conda
 COPY --link --from=build-pillow  /tmp/dist  /tmp/dist
-COPY --link --from=build-vision  /tmp/dist  /tmp/dist
+# COPY --link --from=build-vision  /tmp/dist  /tmp/dist
 COPY --link --from=fetch-pure    /opt/zsh   /opt/zsh
 
 ########################################################################
