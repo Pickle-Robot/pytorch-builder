@@ -9,7 +9,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install python 3.11.13 using pyenv
-RUN curl -fsSL https://pyenv.run | bash
+RUN curl -fsSL https://pyenv.run | bash &&\
+    pyenv install 3.11.13
 
 # Minimize downloads by only cloning shallow branches and not the full `git` history.
 # Use at most 8 jobs for cloning the repository and its submodules.
@@ -20,5 +21,6 @@ RUN git clone --jobs $(( 8 < $(nproc) ? 8: $(nproc) )) --depth 1 \
 WORKDIR /opt/pytorch
 ARG TORCH_CUDA_ARCH_LIST="11.0" # +PTX?
 # ARG BUILD_LIBTORCH_WHL=1
-RUN python -X faulthandler setup.py bdist_wheel -d /tmp/dist
+RUN  pyenv shell 3.11.13 && \
+    python -X faulthandler setup.py bdist_wheel -d /tmp/dist
 
