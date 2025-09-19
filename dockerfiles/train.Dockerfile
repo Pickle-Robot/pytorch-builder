@@ -224,8 +224,7 @@ ARG USE_PRIORITIZED_TEXT_FOR_LD=0
 
 # cat setup.py && \
 RUN --mount=type=cache,target=/opt/ccache \
-    echo "ARCHLIST: $TORCH_CUDA_ARCH_LIST" && \
-    VERBOSE_SCRIPT=1 USE_SYSTEM_NCCL=1 CMAKE_FRESH=1 MAX_JOBS=1 python setup.py bdist_wheel -d /tmp/dist 
+   python setup.py bdist_wheel -d /tmp/dist 
     
 ARG VERBOSE=1
 ARG MAX_JOBS=1  
