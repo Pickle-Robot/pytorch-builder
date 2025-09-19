@@ -20,6 +20,7 @@ ARG PYTHON_VERSION=3.11.13
 # install miniconda
 RUN mkdir -p /miniconda3 && \
     wget ${CONDA_URL} -O /miniconda3/miniconda.sh && \
+    chmod +x /miniconda3/miniconda.sh && \
     /miniconda3/miniconda.sh -b -u -p /miniconda3 && \
     rm /miniconda3/miniconda.sh
 
