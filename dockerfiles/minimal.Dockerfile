@@ -4,25 +4,18 @@ ARG PYTORCH_VERSION_TAG=v2.8.0
 ARG TORCH_URL=https://github.com/pytorch/pytorch.git
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
-# Install git 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    git curl \
-    && rm -rf /var/lib/apt/lists/*
 
+ARG CONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-py311_25.7.0-2-Linux-aarch64.sh
+ARG CONDA_MANAGER=conda
+WORKDIR /tmp/conda
 
-RUN apt-get update && apt-get install -y \
-    software-properties-common \
-    && add-apt-repository ppa:deadsnakes/ppa \
-    && apt-get update \
-    && apt-get install -y \
-    python3.11 \
-    python3.11-venv \
-    python3.11-dev \
-    python3-pip \
-    && rm -rf /var/lib/apt/lists/*
-
-# Create symlinks
-RUN ln -s /usr/bin/python3.11 /usr/bin/python 
+ARG conda=/opt/conda/bin/${CONDA_MANAGER}
+ARG PYTHON_VERSION=3.11.13
+RUN --mount=type=bind,from=curl-conda,source=/tmp/conda,target=/tmp/conda \
+    /bin/bash /tmp/conda/miniconda.sh -b -p /opt/conda && \
+    printf "channels:\n  - conda-forge\n  - nodefaults\nssl_verify: false\n" > /opt/conda/.condarc && \
+    $conda install -y python=${PYTHON_VERSION} && $conda clean -fya && \
+    find /opt/conda -type d -name '__pycache__' | xargs rm -rf
 
 # Minimize downloads by only cloning shallow branches and not the full `git` history.
 # Use at most 8 jobs for cloning the repository and its submodules.
