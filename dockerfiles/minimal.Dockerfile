@@ -8,9 +8,34 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install python 3.11.13 using pyenv
-RUN curl -fsSL https://pyenv.run | bash
-RUN pyenv install 3.11.13
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    wget \
+    build-essential \
+    zlib1g-dev \
+    libncurses5-dev \
+    libgdbm-dev \
+    libnss3-dev \
+    libssl-dev \
+    libreadline-dev \
+    libffi-dev \
+    libsqlite3-dev \
+    libbz2-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Download and compile Python 3.11.13
+RUN wget https://www.python.org/ftp/python/3.11.13/Python-3.11.13.tgz \
+    && tar -xzf Python-3.11.13.tgz \
+    && cd Python-3.11.13 \
+    && ./configure --enable-optimizations \
+    && make -j$(nproc) \
+    && make altinstall \
+    && cd .. \
+    && rm -rf Python-3.11.13.tgz Python-3.11.13
+
+# Create symlinks
+RUN ln -s /usr/local/bin/python3.11 /usr/local/bin/python \
+    && ln -s /usr/local/bin/pip3.11 /usr/local/bin/pip
 
 # Minimize downloads by only cloning shallow branches and not the full `git` history.
 # Use at most 8 jobs for cloning the repository and its submodules.
