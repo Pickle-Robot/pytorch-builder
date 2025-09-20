@@ -8,12 +8,6 @@ ARG CONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-py311_25.7.0-2-Linu
 ARG CONDA_MANAGER=conda
 WORKDIR /tmp/conda
 
-RUN echo "1sdfskdjfgl"  && \
-    sleep 5 && \
-    echo "1YYYYYYYsYYa"  &&\
-    sleep 5 && \
-    echo "1YYYYYYYsYYa" 
-
 # install git, wget, bzip2, and other dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
@@ -37,18 +31,10 @@ RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkg
     conda clean -fya && rm -rf /tmp/conda/miniconda.sh && \
     find /miniconda3 -type d -name '__pycache__' | xargs rm -rf
 
-
-    RUN echo "2sdfskdjfgl"  && \
-    sleep 5 && \
-    echo "2YYYYYYYsYYa"  &&\
-    sleep 5 && \
-    echo "2YYYYYYYsYYa" 
-
 # Create a new conda environment with the same Python version as the system Python.
 # Initialize conda
 RUN /miniconda3/bin/conda init bash && \
     /miniconda3/bin/conda create -n py311 python=3.11 -y
-
 
 
 # Minimize downloads by only cloning shallow branches and not the full `git` history.
@@ -59,19 +45,6 @@ RUN git clone --jobs $(( 8 < $(nproc) ? 8: $(nproc) )) --depth 1 \
         --single-branch --shallow-submodules --recurse-submodules \
         --branch ${PYTORCH_VERSION_TAG} ${TORCH_URL} /opt/pytorch
 
-# Make RUN commands use the new environment
-RUN echo "33333333sdfskdjfgl"  && \
-    sleep 5 && \
-    echo "3YYYYYYYsYYa"  &&\
-    sleep 5 && \
-    echo "3YYYYYYYsYYa" 
-
-SHELL ["/miniconda3/bin/conda", "run", "-n", "py311", "/bin/bash", "-c"]
-RUN echo "sdfskdjfgl"  && \
-    sleep 5 && \
-    echo "34YYYYYYYsYYa"  &&\
-    sleep 5 && \
-    echo "34YYYYYYYsYYa" 
 
 WORKDIR /opt/pytorch
 
