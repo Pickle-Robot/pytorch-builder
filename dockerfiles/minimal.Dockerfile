@@ -60,7 +60,7 @@ RUN git clone --jobs $(( 8 < $(nproc) ? 8: $(nproc) )) --depth 1 \
         --branch ${PYTORCH_VERSION_TAG} ${TORCH_URL} /opt/pytorch
 
 # Make RUN commands use the new environment
-SHELL ["/miniconda3/bin/conda", "run", "-n", "py311", "/bin/bash", "-c"]
+# SHELL ["/miniconda3/bin/conda", "run", "-n", "py311", "/bin/bash", "-c"]
 RUN echo "3sdfskdjfgl"  && \
     sleep 5 && \
     echo "3YYYYYYYsYYa"  &&\
