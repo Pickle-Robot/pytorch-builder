@@ -63,8 +63,8 @@ ENV PYTHONUNBUFFERED=1
 RUN VERBOSE_SCRIPT=true python setup.py bdist_wheel -d /tmp/dist
 
 # install the wheel and verify torch imports and runs a basic op
-
-RUN pip install --no-index --find-links=/tmp/dist torch && \
+# python -m pip install --no-build-isolation -v .
+RUN pip install -no-build-isolation -v --no-index --find-links=/tmp/dist torch && \
     python -c "import torch; print(torch.__version__); print(torch.cuda.is_available()); x = torch.rand(5, 3); print(x)"
 
 FROM wheel-builder AS export
