@@ -37,6 +37,13 @@ RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkg
     conda clean -fya && rm -rf /tmp/conda/miniconda.sh && \
     find /miniconda3 -type d -name '__pycache__' | xargs rm -rf
 
+
+    RUN echo "2sdfskdjfgl"  && \
+    sleep 5 && \
+    echo "2YYYYYYYsYYa"  &&\
+    sleep 5 && \
+    echo "2YYYYYYYsYYa" 
+
 # Create a new conda environment with the same Python version as the system Python.
 # Initialize conda
 RUN /miniconda3/bin/conda init bash && \
@@ -54,6 +61,11 @@ RUN git clone --jobs $(( 8 < $(nproc) ? 8: $(nproc) )) --depth 1 \
 
 # Make RUN commands use the new environment
 SHELL ["/miniconda3/bin/conda", "run", "-n", "py311", "/bin/bash", "-c"]
+RUN echo "3sdfskdjfgl"  && \
+    sleep 5 && \
+    echo "3YYYYYYYsYYa"  &&\
+    sleep 5 && \
+    echo "3YYYYYYYsYYa" 
 
 WORKDIR /opt/pytorch
 
