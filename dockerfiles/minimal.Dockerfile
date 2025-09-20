@@ -62,7 +62,7 @@ RUN cat pyproject.toml && pip install --group dev
 ARG TORCH_CUDA_ARCH_LIST="11.0" # +PTX?
 # ARG BUILD_LIBTORCH_WHL=1
 RUN python -c "print ('XXXXXXX')"  && \
-sleep 1 && \
+sleep 10 && \
 echo "YYYYYYYYY" 
 # && \
 # VERBOSE_SCRIPT=true python setup.py bdist_wheel -d /tmp/dist
