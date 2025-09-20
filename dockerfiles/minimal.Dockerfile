@@ -1,4 +1,4 @@
-FROM nvidia/cuda:13.0.1-cudnn-devel-ubuntu22.04
+FROM nvidia/cuda:13.0.1-cudnn-devel-ubuntu22.04 as wheel-builder
 
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -61,3 +61,9 @@ ARG TORCH_CUDA_ARCH_LIST="11.0" # +PTX?
 ENV PYTHONUNBUFFERED=1
 
 RUN VERBOSE_SCRIPT=true python setup.py bdist_wheel -d /tmp/dist
+
+# Copy the built wheel to
+
+
+FROM wheel-builder AS export
+COPY --from=wheel-builder /tmp/dist /dist/wheels
