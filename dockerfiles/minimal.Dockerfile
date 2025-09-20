@@ -8,11 +8,11 @@ ARG CONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-py311_25.7.0-2-Linu
 ARG CONDA_MANAGER=conda
 WORKDIR /tmp/conda
 
-RUN echo "sdfskdjfgl"  && \
+RUN echo "1sdfskdjfgl"  && \
     sleep 5 && \
-    echo "YYYYYYYsYYa"  &&\
+    echo "1YYYYYYYsYYa"  &&\
     sleep 5 && \
-    echo "YYYYYYYsYYa" 
+    echo "1YYYYYYYsYYa" 
 
 # install git, wget, bzip2, and other dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
