@@ -91,7 +91,7 @@ RUN git clone --jobs $(( 8 < $(nproc) ? 8: $(nproc) )) --depth 1 \
 # RUN python -m pip install /tmp/dist/torch-2.9.0a0+gitc31a818-cp311-cp311-linux_aarch64.whl && \
 #     python -c "import torch; print(torch.__version__); print(torch.cuda.is_available()); x = torch.rand(5, 3); print(x)"
 
-COPY test-torch-vision-nms.py /test-torch-vision-nms.py
+COPY ./test-torch-vision-nms.py /test-torch-vision-nms.py
 RUN python -m pip install /tmp/dist/torch_vision-0.23.0-cp311-cp311-linux_aarch64.whl && \
     python /test-torch-vision-nms.py
 
