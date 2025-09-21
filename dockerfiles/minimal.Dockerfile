@@ -67,8 +67,11 @@ RUN VERBOSE_SCRIPT=true python setup.py bdist_wheel -d /tmp/dist
 # Next build torch vision wheel
 # https://github.com/pytorch/vision/blob/main/CONTRIBUTING.md#development-installation
 
+#  conda install -c conda-forge libstdcxx-ng  is to resolve -- ImportError: /miniconda3/bin/../lib/libstdc++.so.6: version `GLIBCXX_3.4.30' not found (required by /miniconda3/lib/python3.11/site-packages/torch/lib/libtorch_python.so)
+
 # Start by installing the nightly build of PyTorch (or in our case the wheel we just built)
-RUN python -m pip install /tmp/dist/torch-2.9.0a0+gitc31a818-cp311-cp311-linux_aarch64.whl
+RUN conda install -c conda-forge libstdcxx-ng && \
+    python -m pip install /tmp/dist/torch-2.9.0a0+gitc31a818-cp311-cp311-linux_aarch64.whl
 
 
 ENV FORCE_CUDA=1
