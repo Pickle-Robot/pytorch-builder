@@ -4,6 +4,7 @@
 # Edit this file to allow external files into the Docker build.
 **
 !*requirements*.txt
+!test-torch-vision-nms.py
 !**/*requirements*.txt
 !*environment*.yaml
 !**/*environment*.yaml
