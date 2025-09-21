@@ -63,11 +63,36 @@ ENV PYTHONUNBUFFERED=1
 
 RUN VERBOSE_SCRIPT=true python setup.py bdist_wheel -d /tmp/dist
 
+
+# Next build torch vision wheel
+# https://github.com/pytorch/vision/blob/main/CONTRIBUTING.md#development-installation
+
+# Start by installing the nightly build of PyTorch (or in our case the wheel we just built)
+RUN python -m pip install /tmp/dist/torch-2.9.0a0+gitc31a818-cp311-cp311-linux_aarch64.whl
+
+
+ENV FORCE_CUDA=1
+
+WORKDIR /
+ARG PYTORCH_VISION_URL=https://github.com/pytorch/vision.git
+ARG PYTORCH_VISION_VERSION_TAG=v0.23.0
+RUN git clone --jobs $(( 8 < $(nproc) ? 8: $(nproc) )) --depth 1 \
+        --single-branch --shallow-submodules --recurse-submodules \
+        --branch ${PYTORCH_VISION_VERSION_TAG} ${PYTORCH_VISION_URL} /opt/pytorch_vision && \
+         cd /opt/pytorch_vision && \
+         python setup.py bdist_wheel -d /tmp/dist
+
+
 # install the wheel and verify torch imports and runs a basic op
 # python -m pip install --no-build-isolation -v .
-WORKDIR /
 # RUN python -m pip install /tmp/dist/torch-2.9.0a0+gitc31a818-cp311-cp311-linux_aarch64.whl && \
 #     python -c "import torch; print(torch.__version__); print(torch.cuda.is_available()); x = torch.rand(5, 3); print(x)"
+
+# First, check what GLIBCXX versions you have
+# strings /miniconda3/lib/libstdc++.so.6 | grep GLIBCXX
+
+# # Update libstdc++ and gcc
+# conda install -c conda-forge libstdcxx-ng
 
 # FROM wheel-builder AS export
 # COPY --from=wheel-builder /tmp/dist /dist/wheels
