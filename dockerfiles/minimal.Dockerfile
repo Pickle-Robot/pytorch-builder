@@ -1,4 +1,4 @@
-FROM nvidia/cuda:13.0.1-cudnn-devel-ubuntu22.04  as wheel-builder
+FROM nvidia/cuda:13.0.1-cudnn-devel-ubuntu22.04  AS wheel-builder
 
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -96,4 +96,4 @@ RUN ls /tmp/dist && python -m pip install /tmp/dist/torchvision-0.23.0a0+824e8c8
 
 
 FROM wheel-builder AS export
-COPY --from=wheel-builder /tmp/dist /dist/wheels
+COPY --from=wheel-builder /tmp/dist /dist/wheels2
