@@ -1,4 +1,5 @@
-FROM nvidia/cuda:13.0.1-cudnn-devel-ubuntu22.04 as wheel-builder
+FROM nvidia/cuda:13.0.1-cudnn-devel-ubuntu22.04 
+# as wheel-builder
 
 
 ENV DEBIAN_FRONTEND=noninteractive
