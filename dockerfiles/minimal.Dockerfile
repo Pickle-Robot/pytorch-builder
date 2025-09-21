@@ -1,5 +1,4 @@
-FROM nvidia/cuda:13.0.1-cudnn-devel-ubuntu22.04 
-#as wheel-builder
+FROM nvidia/cuda:13.0.1-cudnn-devel-ubuntu22.04 as wheel-builder
 
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -91,11 +90,10 @@ RUN git clone --jobs $(( 8 < $(nproc) ? 8: $(nproc) )) --depth 1 \
 # RUN python -m pip install /tmp/dist/torch-2.9.0a0+gitc31a818-cp311-cp311-linux_aarch64.whl && \
 #     python -c "import torch; print(torch.__version__); print(torch.cuda.is_available()); x = torch.rand(5, 3); print(x)"
 
-# First, check what GLIBCXX versions you have
-# strings /miniconda3/lib/libstdc++.so.6 | grep GLIBCXX
+COPY test-torch-vision-nms.py /
+RUN python -m pip install /tmp/dist/torch_vision-0.23.0-cp311-cp311-linux_aarch64.whl && \
+    python /test-torch-vision-nms.py
 
-# # Update libstdc++ and gcc
-# conda install -c conda-forge libstdcxx-ng
 
 # FROM wheel-builder AS export
 # COPY --from=wheel-builder /tmp/dist /dist/wheels
